@@ -95,6 +95,7 @@ io.on('connection', function(socket){
     var sshuser = '';
     var request = socket.request;
     console.log((new Date()) + ' Connection accepted.');
+    console.log("fooface " + socket.handshake.query.foo);
     if (match = request.headers.referer.match('/wetty/ssh/.+$')) {
         sshuser = match[0].replace('/wetty/ssh/', '') + '@';
     } else if (globalsshuser) {
@@ -103,7 +104,8 @@ io.on('connection', function(socket){
 
     var term;
     if (process.getuid() == 0) {
-        term = pty.spawn('/bin/login', [], {
+        //term = pty.spawn('/bin/login', [], {
+        term = pty.spawn('docker',['exec','-it','79a1c8098c10','/bin/sh'],{
             name: 'xterm-256color',
             cols: 80,
             rows: 30

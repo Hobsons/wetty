@@ -104,8 +104,8 @@ io.on('connection', function(socket){
 
     var term;
     if (process.getuid() == 0) {
-        //term = pty.spawn('/bin/login', [], {
-        term = pty.spawn('docker',['exec','-it','79a1c8098c10','/bin/sh'],{
+        term = pty.spawn('/bin/login', [], {
+        //term = pty.spawn('docker',['exec','-it','79a1c8098c10','/bin/sh'],{
             name: 'xterm-256color',
             cols: 80,
             rows: 30

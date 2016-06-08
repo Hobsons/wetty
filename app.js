@@ -75,8 +75,14 @@ process.on('uncaughtException', function(e) {
 var httpserv;
 
 var app = express();
+app.set('views', './views');
+app.set('view engine', 'pug');
 app.get('/wetty/ssh/:user', function(req, res) {
     res.sendfile(__dirname + '/public/wetty/index.html');
+});
+app.get('/wetty/mesos/:mesosid', function(req, res) {
+    var mesos_id = req.params.mesosid;
+    res.render("task",{taskid:mesos_id})
 });
 app.use('/', express.static(path.join(__dirname, 'public')));
 
@@ -95,7 +101,8 @@ io.on('connection', function(socket){
     var sshuser = '';
     var request = socket.request;
     console.log((new Date()) + ' Connection accepted.');
-    console.log("fooface " + socket.handshake.query.foo);
+    var taskid = socket.handshake.query.taskid;
+    console.log("mesos taskid " + taskid);
     if (match = request.headers.referer.match('/wetty/ssh/.+$')) {
         sshuser = match[0].replace('/wetty/ssh/', '') + '@';
     } else if (globalsshuser) {
@@ -104,8 +111,8 @@ io.on('connection', function(socket){
 
     var term;
     if (process.getuid() == 0) {
-        term = pty.spawn('/bin/login', [], {
-        //term = pty.spawn('docker',['exec','-it','79a1c8098c10','/bin/sh'],{
+        //term = pty.spawn('/bin/login', [], {
+        term = pty.spawn('docker',['exec','-it',taskid,'/bin/sh'],{
             name: 'xterm-256color',
             cols: 80,
             rows: 30

@@ -96,7 +96,7 @@ if (runhttps) {
     });
 }
 
-var io = server(httpserv,{path: '/wetty/socket.io'});
+var io = server(httpserv,{path: '/wetty/socket.io', transports: ['polling']});
 io.on('connection', function(socket){
     var sshuser = '';
     var request = socket.request;

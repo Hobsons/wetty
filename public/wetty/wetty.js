@@ -1,5 +1,5 @@
 var term;
-var socket = io(location.origin, {path: '/wetty/socket.io', query:"foo=bar"})
+var socket = io(location.origin, {path: '/wetty/socket.io', query:"foo=bar", transports: ['polling']})
 var buf = '';
 
 function Wetty(argv) {

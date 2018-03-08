@@ -9,7 +9,7 @@ html
         script(type."text/javascript").
             var term;
             var taskid = "#{taskid}";
-            var socket = io(location.origin, {path: '/wetty/socket.io', query:"taskid=" + taskid})
+            var socket = io(location.origin, {path: '/wetty/socket.io', query:"taskid=" + taskid, transports: ['polling']})
             var buf = '';
 
             function Wetty(argv) {
